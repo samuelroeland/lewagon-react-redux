@@ -16,7 +16,7 @@ const Counter = ({ start, step, id }) => {
   }
   return (
     <div className="m-3 d-flex align-items-center justify-content-center">
-      <h1 class="m-4">Counter {id}</h1>
+      <h1 className="m-4">Counter {id}</h1>
       <button className="btn btn-danger me-2" onClick={handleMinus}>
         -
       </button>
