@@ -3,6 +3,7 @@ import './App.scss'
 import ReactMapBoxGl from 'react-mapbox-gl'
 import Flat from '../Flat'
 import FlatMarker from '../FlatMarker'
+import Search from '../Search'
 
 const Map = ReactMapBoxGl({
   accessToken:
@@ -14,6 +15,7 @@ const API_URL =
 
 const App = () => {
   const [flats, setFlats] = useState([])
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     fetch(API_URL)
@@ -21,14 +23,22 @@ const App = () => {
       .then((data) => setFlats(data))
   }, [])
 
-  console.log('I am rendering')
+  const handleSearch = (text) => {
+    setSearchText(text)
+  }
+
+  // 'i' = case insensitive
+  const filteredFlats = flats.filter((flat) =>
+    flat.name.match(new RegExp(searchText, 'i')),
+  )
 
   return (
     <div className="app">
       <div className="main">
-        <input className="search" />
+        {/* <input className="search" /> */}
+        <Search onSearch={handleSearch} />
         <div className="flats">
-          {flats.map((flat) => {
+          {filteredFlats.map((flat) => {
             return (
               <Flat
                 key={flat.id}
@@ -43,7 +53,7 @@ const App = () => {
       <div className="map">
         <Map
           zoom={[14]}
-          center={[2.3522, 48.8566]}
+          center={[2.3522, 48.884211]}
           containerStyle={{ height: '80vh', width: '100%' }}
           style="mapbox://styles/mapbox/streets-v8"
         >
