@@ -11,4 +11,17 @@
   .flat-title {
     margin-top: 10px;
   }
+  &:hover {
+    cursor: pointer;
+    background: #eee;
+    img {
+      opacity: 0.8;
+    }
+  }
+  &.selected {
+    background: greenyellow;
+    img {
+      opacity: 0.8;
+    }
+  }
 }

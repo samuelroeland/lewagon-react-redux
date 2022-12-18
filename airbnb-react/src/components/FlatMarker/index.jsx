@@ -1,10 +1,11 @@
 import { Marker } from 'react-mapbox-gl'
 import './FlatMarker.scss'
 
-const FlatMarker = ({ lat, lng, price }) => {
+const FlatMarker = ({ lat, lng, price, selected }) => {
+  const classes = selected ? 'marker selected' : 'marker'
   return (
     <Marker coordinates={[lng, lat]} anchor="bottom">
-      <strong className="marker">{price}</strong>
+      <strong className={classes}>{price}</strong>
     </Marker>
   )
 }

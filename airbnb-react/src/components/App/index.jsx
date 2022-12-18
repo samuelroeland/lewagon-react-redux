@@ -13,9 +13,13 @@ const Map = ReactMapBoxGl({
 const API_URL =
   'https://raw.githubusercontent.com/lewagon/flats-boilerplate/master/flats.json'
 
+const DEFAULT_CENTER = [2.3522, 48.884211]
+
 const App = () => {
   const [flats, setFlats] = useState([])
   const [searchText, setSearchText] = useState('')
+  const [selectedId, setSelectedId] = useState()
+  const [center, setCenter] = useState(DEFAULT_CENTER)
 
   useEffect(() => {
     fetch(API_URL)
@@ -25,6 +29,18 @@ const App = () => {
 
   const handleSearch = (text) => {
     setSearchText(text)
+  }
+
+  const handleFlatSelect = (id) => {
+    if (selectedId === id) {
+      setSelectedId()
+      setCenter(DEFAULT_CENTER)
+    } else {
+      const selectedFlat = flats.find((flat) => flat.id === id)
+      const { lat, lng } = selectedFlat
+      setCenter([lng, lat])
+      setSelectedId(id)
+    }
   }
 
   // 'i' = case insensitive
@@ -45,6 +61,8 @@ const App = () => {
                 name={flat.name}
                 price={flat.price}
                 imageUrl={flat.imageUrl}
+                onSelect={() => handleFlatSelect(flat.id)}
+                selected={flat.id === selectedId}
               />
             )
           })}
@@ -53,7 +71,7 @@ const App = () => {
       <div className="map">
         <Map
           zoom={[14]}
-          center={[2.3522, 48.884211]}
+          center={center}
           containerStyle={{ height: '80vh', width: '100%' }}
           style="mapbox://styles/mapbox/streets-v8"
         >
@@ -64,6 +82,7 @@ const App = () => {
                 lat={flat.lat}
                 lng={flat.lng}
                 price={flat.price}
+                selected={flat.id === selectedId}
               />
             )
           })}
